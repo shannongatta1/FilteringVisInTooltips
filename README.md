@@ -1,2 +1,2 @@
-# FilteringVisInTooltips
-Filtering and Visualizations in Tooltips
+# Filtering Visualiations In Tooltips
+Comparing Fertility to Life Expectancy
