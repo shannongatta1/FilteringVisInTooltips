@@ -168,6 +168,14 @@ function plotData(map) {
                 .duration(500)
                 .style("opacity", 0);
         });
+
+            /////the problem
+        svgContainer.selectAll("text")
+        .data(data)
+        .filter(function(d) {return d.population >= 1000000;})
+        .attr('x', xMap
+        .attr('y', yMap)
+        .text(function(d){return d.country})
 }
 
 function plotPopulation(country, toolChart) {
