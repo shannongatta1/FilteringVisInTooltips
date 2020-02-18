@@ -94,12 +94,12 @@ function makeLabels(svgContainer, msm, title, x, y) {
 
 
         /////the problem
-    svgContainer.append("text")
-        .data(data)
-        .filter(function(d) {return selected >= 1000000;})
-        .attr('x', msm.width)
-        .attr('y', msm.height)
-        .text(function(d){return d.country})
+    // svgContainer.append("text")
+    //     .data(data)
+    //     .filter(function(d) {return selected >= 1000000;})
+    //     .attr('x', msm.width)
+    //     .attr('y', msm.height)
+    //     .text(function(d){return d.country})
 
     
     // svgContainer.append("text")
