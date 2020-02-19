@@ -3,6 +3,7 @@
 let data = "";
 let svgContainer = ""; // keep SVG reference in global scope
 let popChartContainer = "";
+let allData = "";
 const msm = {
     width: 1000,
     height: 800,
@@ -10,10 +11,10 @@ const msm = {
     marginLeft: 50,
 }
 const small_msm = {
-    width: 500,
-    height: 500,
-    marginAll: 50,
-    marginLeft: 80
+    width: 600,
+    height: 600,
+    marginAll: 100,
+    marginLeft: 120
 }
 
 // load data and make scatter plot after window loads
@@ -29,6 +30,7 @@ window.onload = function () {
     // d3.csv is basically fetch but it can be be passed a csv file as a parameter
     d3.csv("gapminder.csv")
         .then(function(data) {
+            allData = data
             data = data.filter(function(d){ return d.year == 1980 })
             makeScatterPlot(data)
         })
@@ -40,7 +42,7 @@ function makeScatterPlot(csvData) {
     // assign data as global variable; filter out unplottable values
     data = csvData.filter((data) => {return data.fertility != "NA" && data.life_expectancy != "NA"})
 
-    data = data.filter(function(d){ return d.year == 1980 })
+    // data = data.filter(function(d){ return d.year == 1980 })
 
     // get arrays of fertility rate data and life Expectancy data
     let fertility_rate_data = data.map((row) => parseFloat(row["fertility"]));
@@ -86,7 +88,7 @@ function makeLabels(svgContainer, msm, title, x, y) {
 // and add tooltip functionality
 function plotData(map) {
     // get population data as array
-    curData = data.filter((row) => {
+    curData = allData.filter((row) => {
         return row.year == 1980 && row.fertility != "NA" && row.life_expectancy != "NA"
     })
     let pop_data = curData.map((row) => +row["population"]);
@@ -112,7 +114,7 @@ function plotData(map) {
 
     // append data to SVG and plot as points
     svgContainer.selectAll('.dot')
-        .data(curData)
+        .data(data)
         .enter()
         .append('circle')
         .attr('cx', xMap)
@@ -155,9 +157,9 @@ function plotData(map) {
 }
 
 function plotPopulation(country, toolChart) {
-    let countryData = data.filter((row) => {return row.country == country})
+    let countryData = allData.filter((row) => {return row.country == country})
     let population = countryData.map((row) => parseInt(row["population"]));
-    let year = countryData.map((row) => parseInt(row["year"])); //<-
+    let year = countryData.map((row) => parseInt(row["year"])); 
 
     let axesLimits = findMinMax(year, population);
     let mapFunctions = drawAxes(axesLimits, "year", "population", toolChart, small_msm);
@@ -212,9 +214,12 @@ function drawAxes(limits, x, y, svgContainer, msm) {
 
     // plot y-axis at the left of SVG
     let yAxis = d3.axisLeft().scale(yScale);
+
+
     svgContainer.append('g')
-        .attr('transform', 'translate(' + msm.marginAll + ', 0)')
+        .attr('transform', 'translate(' + msm.marginAll + ',0)')
         .call(yAxis);
+        
 
     // return mapping and scaling functions
     return {
